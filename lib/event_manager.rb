@@ -41,7 +41,7 @@ contents.each do |row|
   
   legislators = legislators.officials
 
-  legislator_name = legislators.map(&:name)
+  legislator_name = legislators.map(&:name).join(',')
 
   rescue
     legislator_name = 'You can find your representatives by visiting www.commoncause.org/take-action/find-elected-officials'
