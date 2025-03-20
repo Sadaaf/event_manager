@@ -20,7 +20,8 @@ require 'csv'
 contents = CSV.open('event_attendees.csv', headers: true, header_converters: :symbol)
 contents.each do |row|
   first_name, zipcode = row[:first_name] ,row[:zipcode]
-  # Check the zipcode length and add 0 if it is less than 5 and truncate if more than 5
+  # Check the zipcode length and add 0 if it is less than 5 and truncate if more than 5.
+  # If zipcode is nil replace with 5 zeros
   if zipcode.nil?
     zipcode = '00000'
   elsif zipcode.length < 5
