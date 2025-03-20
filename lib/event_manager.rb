@@ -8,8 +8,16 @@ puts 'Event Manager Initialized'
 # puts contents
 
 # Read the file line by line
-lines = File.readlines('event_attendees.csv')
-lines.each_with_index do |line, index|
-  next if index == 0
-  puts line.split(',')[2]
+# lines = File.readlines('event_attendees.csv')
+# lines.each_with_index do |line, index|
+#   next if index == 0
+#   puts line.split(',')[2]
+# end
+
+
+# Use the csv library
+require 'csv'
+contents = CSV.open('event_attendees.csv', headers: true)
+contents.each do |row|
+  puts row[2]
 end
