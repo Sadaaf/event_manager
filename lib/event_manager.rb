@@ -44,15 +44,19 @@ contents = CSV.open('event_attendees.csv', headers: true, header_converters: :sy
 template_letter = File.read('form_letter.erb')
 erb_template = ERB.new template_letter
 
+def save_thank_you_letter(id, form_letter)
+  file_name = "output/thanks_#{id}.html"
+  Dir.mkdir('output') unless Dir.exist?('output')
+  File.open(file_name, 'w') do |file|
+    file.puts form_letter
+  end
+end
+
 contents.each do |row|
   id = row[0]
   name, zipcode = row[:first_name] ,row[:zipcode]
   zipcode = clean_zipcode(zipcode)
   legislators = legislators_by_zipcode(zipcode)
   form_letter = erb_template.result(binding)
-  file_name = "output/thanks_#{id}.html"
-  Dir.mkdir('output') unless Dir.exist?('output')
-  File.open(file_name, 'w') do |file|
-    file.puts form_letter
-  end
+  save_thank_you_letter(id, form_letter)
 end
