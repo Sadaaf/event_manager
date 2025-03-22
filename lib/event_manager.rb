@@ -76,6 +76,36 @@ def find_registration_time(registration_date)
   registration_date = Time.parse(registration_date.split(' ')[1])
 end
 
+def find_registration_day_of_the_week(registration_date)
+  date_array = registration_date.split(' ')[0].split('/')
+  registration_date = Date.new(date_array[0].to_i+2000, date_array[2].to_i, date_array[1].to_i).wday
+  case registration_date
+  when 0
+    registration_date = 'Sunday'
+  when 1
+    registration_date = 'Monday'
+  when 2
+    registration_date = 'Tuesday'
+  when 3
+    registration_date = 'Wednesday'
+  when 4
+    registration_date = 'Thursday'
+  when 5
+    registration_date = 'Friday'
+  when 6
+    registration_date = 'Saturday'
+  end
+  registration_date
+end
+
+def save_registration_day_of_the_week(registration_date)
+  filename = "output/registration_days.txt"
+  Dir.mkdir('output') unless Dir.exist?('output')
+  File.open(filename, 'a') do |file|
+    file.puts registration_date
+  end
+end
+
 contents.each do |row|
   id = row[0]
   registration_date = row[:regdate]
@@ -86,5 +116,7 @@ contents.each do |row|
   form_letter = erb_template.result(binding)
   registration_time = find_registration_time(registration_date)
   save_registration_time(registration_time)
+  registration_date = find_registration_day_of_the_week(registration_date)
+  save_registration_day_of_the_week(registration_date)
   save_thank_you_letter(id, form_letter)
 end
